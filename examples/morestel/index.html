@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Morestel — Ville de Morestel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #101010;
+    --muted: #6f6f6f;
+    --faint: #9a9a9a;
+    --line: #e6e6e4;
+    --panel: #f2f2f0;
+    --page: #ffffff;
+    --maxw: 1180px;
+    --gutter: 28px;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  img, svg { max-width: 100%; display: block; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: clamp(360px, 46vw, 620px);
+    overflow: hidden;
+    background: linear-gradient(180deg, #8fadc6 0%, #b3c4d1 46%, #d5cec2 76%, #e7dac9 100%);
+  }
+  .hero__scene { position: absolute; inset: auto 0 0 0; height: 42%; width: 100%; }
+  .hero__scene svg { width: 100%; height: 100%; }
+  .hero__haze {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 58%;
+    background: linear-gradient(180deg, rgba(230, 220, 205, 0) 0%, rgba(230, 220, 205, 0.55) 38%, rgba(230, 220, 205, 0.15) 72%, rgba(230, 220, 205, 0) 100%);
+    pointer-events: none;
+  }
+
+  .hero__title {
+    position: absolute;
+    top: 8px;
+    left: var(--gutter);
+    margin: 0;
+    color: #fff;
+    font-size: clamp(56px, 15.5vw, 210px);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 0.95;
+  }
+
+  .hero__meta {
+    position: absolute;
+    top: 30px;
+    right: var(--gutter);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 9px;
+    line-height: 1.7;
+    letter-spacing: 0.03em;
+    text-align: left;
+  }
+  .hero__meta strong { font-weight: 600; display: block; }
+  .hero__weather {
+    display: flex;
+    gap: 14px;
+    margin-top: 12px;
+    align-items: center;
+    font-size: 9px;
+  }
+  .hero__weather span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .dot {
+    width: 9px; height: 9px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 11px var(--gutter);
+    max-width: var(--maxw);
+    margin: 0 auto;
+  }
+  .nav__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    font-size: 10.5px;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+  }
+  .nav__links a:hover { color: var(--ink); }
+  .nav__links a[aria-current="page"] { color: var(--ink); font-weight: 600; }
+  .nav__search {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 10.5px;
+    color: var(--muted);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .nav__search:hover { color: var(--ink); }
+
+  /* ---------- News ---------- */
+  .news { padding: 56px 0 40px; }
+  .news__grid {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) 1.75fr;
+    gap: 40px 56px;
+    align-items: start;
+  }
+  .section-title {
+    margin: 0;
+    font-size: clamp(42px, 6.4vw, 78px);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 0.92;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 46px;
+  }
+  .card__title {
+    margin: 0 0 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.005em;
+  }
+  .card__body {
+    margin: 0 0 18px;
+    font-size: 10.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .more {
+    font-size: 8.5px;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+  }
+  .more:hover { color: var(--ink); }
+
+  /* ---------- Revues panel ---------- */
+  .revues {
+    margin-top: 48px;
+    background: var(--panel);
+    padding: 16px 16px 22px;
+  }
+  .revues__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10.5px;
+    font-weight: 600;
+    margin-bottom: 22px;
+  }
+  .cover {
+    background: #fff;
+    padding: 26px 30px;
+    display: flex;
+    justify-content: center;
+  }
+  .cover__art {
+    width: 118px;
+    aspect-ratio: 3 / 4;
+    background: #1b1b1b;
+    color: #f4f0e6;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 7px;
+    letter-spacing: 0.08em;
+  }
+  .cover__art figure { margin: 0; }
+  .revues__caption {
+    text-align: center;
+    margin: 16px 0 0;
+    font-size: 10px;
+  }
+  .revues__caption span { display: block; color: var(--faint); font-size: 8.5px; margin-top: 3px; }
+
+  /* ---------- Service public ---------- */
+  .service {
+    border-top: 1px solid var(--line);
+    padding: 42px 0 64px;
+  }
+  .service__grid {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) minmax(150px, 0.8fr) 1.6fr;
+    gap: 32px 48px;
+    align-items: start;
+  }
+  .service h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .label {
+    font-size: 8.5px;
+    letter-spacing: 0.08em;
+    color: var(--faint);
+    margin: 0 0 10px;
+  }
+  .address { font-size: 10.5px; line-height: 1.75; color: var(--ink); margin: 0 0 22px; }
+  .links { list-style: none; margin: 0; padding: 0; font-size: 10.5px; }
+  .links li { margin-bottom: 6px; }
+  .links a { color: var(--muted); }
+  .links a:hover { color: var(--ink); }
+  .links .arrow { color: var(--faint); font-size: 8px; }
+
+  .photo {
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(180deg, #9db4c8 0%, #c3cdd3 55%, #d9cec0 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .photo svg { position: absolute; inset: auto 0 0 0; height: 62%; width: 100%; }
+
+  @media (max-width: 860px) {
+    .news__grid { grid-template-columns: 1fr; gap: 32px; }
+    .service__grid { grid-template-columns: 1fr; }
+    .hero { min-height: 340px; }
+    .hero__meta { position: static; padding: 96px var(--gutter) 0; color: rgba(255,255,255,.95); }
+  }
+  @media (max-width: 560px) {
+    .cards { grid-template-columns: 1fr; }
+    .nav__inner { flex-direction: column; align-items: flex-start; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero__scene" aria-hidden="true">
+      <!-- Placeholder illustration standing in for the dusk photograph of the village -->
+      <svg viewBox="0 0 1200 320" preserveAspectRatio="none" role="img">
+        <path d="M0 210 L120 176 L260 196 L380 168 L520 190 L660 160 L820 186 L960 164 L1100 188 L1200 172 L1200 320 L0 320 Z" fill="#8d9a96" opacity="0.45"/>
+        <path d="M0 250 L90 234 L150 246 L210 226 L300 244 L360 232 L430 248 L520 230 L600 244 L700 228 L780 246 L880 232 L980 248 L1080 234 L1200 250 L1200 320 L0 320 Z" fill="#6f7a76" opacity="0.7"/>
+        <g fill="#535c58">
+          <rect x="470" y="120" width="26" height="130"/>
+          <path d="M470 120 L483 92 L496 120 Z"/>
+          <rect x="640" y="146" width="34" height="104"/>
+          <path d="M636 146 L657 126 L678 146 Z"/>
+          <rect x="180" y="196" width="60" height="54"/>
+          <path d="M174 196 L210 176 L246 196 Z"/>
+          <rect x="300" y="204" width="76" height="46"/>
+          <path d="M294 204 L338 184 L382 204 Z"/>
+          <rect x="760" y="198" width="70" height="52"/>
+          <path d="M754 198 L795 178 L836 198 Z"/>
+          <rect x="900" y="208" width="86" height="42"/>
+          <path d="M894 208 L943 188 L992 208 Z"/>
+        </g>
+        <path d="M0 274 L1200 264 L1200 320 L0 320 Z" fill="#454d4a"/>
+      </svg>
+    </div>
+    <div class="hero__haze" aria-hidden="true"></div>
+
+    <h1 class="hero__title">Morestel</h1>
+
+    <div class="hero__meta">
+      <strong>38510</strong>
+      Isère / Auvergne-Rhône-Alpes<br />
+      45°40′41″N 5°28′03″E
+      <div class="hero__weather">
+        <span><i class="dot"></i> Couvert</span>
+        <span><i class="dot"></i> 5 km/h</span>
+        <span><i class="dot"></i> 8°</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <div class="nav__inner">
+      <div class="nav__links">
+        <a href="#">Vie municipale</a>
+        <a href="#" aria-current="page">Patrimoine</a>
+        <a href="#">Cadre de vie</a>
+        <a href="#">Famille et solidarité</a>
+        <a href="#">Associations</a>
+        <a href="#">Culture</a>
+      </div>
+      <button class="nav__search" type="button">
+        Rechercher
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 L21 21"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <main class="wrap news">
+    <div class="news__grid">
+      <div>
+        <h2 class="section-title">Actualité</h2>
+
+        <section class="revues">
+          <div class="revues__head">
+            <span>Revues Municipales</span>
+            <span aria-hidden="true">→</span>
+          </div>
+          <div class="cover">
+            <div class="cover__art">
+              <figure>Promenade</figure>
+              <figure style="text-align:right">2023</figure>
+            </div>
+          </div>
+          <p class="revues__caption">
+            Festival de Poésie
+            <span>août 2023</span>
+          </p>
+        </section>
+      </div>
+
+      <div class="cards">
+        <article>
+          <h3 class="card__title">Tous dans le même panier</h3>
+          <p class="card__body">À compter du 1er janvier 2023 dans votre commune, vous pourrez déposer tous vos emballages sans exception dans le bac jaune !</p>
+          <a class="more" href="#">En savoir plus →</a>
+        </article>
+
+        <article>
+          <h3 class="card__title">Protéger son compteur contre le gel</h3>
+          <p class="card__body">Afin d'éviter les frais de réparations du compteur et surtout d'être privé d'eau, quelques gestes simples pour protéger son compteur d'eau contre le gel.</p>
+          <a class="more" href="#">En savoir plus →</a>
+        </article>
+
+        <article>
+          <h3 class="card__title">Des nouvelles du rucher de Morestel</h3>
+          <p class="card__body">Les 3 ruches situées au pied des remparts de la Maison Ravier abritent les abeilles qui ont participé tout au long de ce début d'année à la pollinisation et à la récolte du miel.</p>
+          <a class="more" href="#">En savoir plus →</a>
+        </article>
+
+        <article>
+          <h3 class="card__title">Révision du PLU</h3>
+          <p class="card__body">Consultez le rapport du commissaire enquêteur suite à la clôture de l'enquête publique relative à la révision du PLU reçu le 23 décembre 2022.</p>
+          <a class="more" href="#">En savoir plus →</a>
+        </article>
+
+        <article>
+          <h3 class="card__title">Influenza Aviaire</h3>
+          <p class="card__body">Notre région est concernée avec des foyers qui ont été traités dans l'Ain, l'Ardèche, la Loire et le Rhône. Aucun cas n'est détecté en Isère à ce jour.</p>
+          <a class="more" href="#">En savoir plus →</a>
+        </article>
+
+        <article>
+          <h3 class="card__title">Agenda 2023 du centre Aqualudique</h3>
+          <p class="card__body">Consultez l'agenda annuel des activités sportives et ludiques 2023.</p>
+          <a class="more" href="#">En savoir plus →</a>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer class="wrap service">
+    <div class="service__grid">
+      <h2>Service public</h2>
+
+      <div>
+        <p class="label">Mairie</p>
+        <p class="address">
+          Hôtel de Ville - BP6<br />
+          38510 Morestel<br />
+          04 74 80 09 77<br />
+          mairie@morestel.fr
+        </p>
+        <ul class="links">
+          <li><a href="#">Travaux <span class="arrow">↗</span></a></li>
+          <li><a href="#">Jumelage <span class="arrow">↗</span></a></li>
+          <li><a href="#">Service famille <span class="arrow">↗</span></a></li>
+          <li><a href="#">État civil <span class="arrow">↗</span></a></li>
+        </ul>
+      </div>
+
+      <div class="photo" aria-hidden="true">
+        <svg viewBox="0 0 800 200" preserveAspectRatio="none">
+          <path d="M0 120 L140 100 L280 118 L420 96 L560 116 L700 98 L800 112 L800 200 L0 200 Z" fill="#7d8a86" opacity="0.6"/>
+          <g fill="#4a5350">
+            <rect x="300" y="60" width="20" height="90"/>
+            <path d="M300 60 L310 40 L320 60 Z"/>
+            <rect x="120" y="112" width="54" height="38"/>
+            <path d="M114 112 L147 94 L180 112 Z"/>
+            <rect x="520" y="108" width="64" height="42"/>
+            <path d="M514 108 L552 90 L590 108 Z"/>
+          </g>
+          <path d="M0 160 L800 152 L800 200 L0 200 Z" fill="#3f4744"/>
+        </svg>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
