@@ -1,21 +1,50 @@
-# Remplacer les photos
+# Les photos
 
-Les images vivent dans `img/`. Pour changer une photo, déposez la vôtre sous
-**le même nom de fichier** — aucune modification du HTML n'est nécessaire.
+Toutes les images vivent dans `img/`. Pour en changer une, déposez la vôtre
+sous **le même nom de fichier** — rien à modifier dans `index.html`.
 
-| Fichier | Où elle apparaît | Cadrage attendu | Ratio conseillé |
-|---|---|---|---|
-| `village.jpg` | Héros, pleine largeur | Vue d'ensemble du village. Le titre passe au centre : gardez cette zone calme (ciel, feuillage, toits) | 2,5:1 · ≥ 1900 px de large |
-| `chateau.jpg` | Fiche 01 « Le château » | Portrait, sujet dans la moitié haute (le bas est couvert par le dégradé) | 3:4 · ≥ 800 px de large |
-| `clocher.jpg` | Fiche 02 « Église Saint-Sauveur » | Portrait | 3:4 |
-| `toits.jpg` | Fiche 03 « Le vieux village » **et** le plan de la section Mairie | Paysage, lisible en 4:3 comme en 3:4 | 4:3 · ≥ 900 px |
-| `falaise.jpg` | Fiche 04 « L'eau et la pierre » | Portrait | 3:4 |
-| `grandpre.jpg` | Fiche 05 « Le Grand Pré » | Portrait | 3:4 |
-| `verdure.jpg` | Fiche 06 « La Bresque » | Portrait | 3:4 |
+## Ce qu'il y a aujourd'hui
 
-Poids conseillé : 150–400 Ko par image (JPEG qualité 85). Le héros peut monter
-à 500 Ko.
+Les onze fichiers sont des **recadrages d'une seule photo aérienne du village**,
+la seule vraie photo disponible. Ce sont donc des bouche-trous : le village y
+est joli, mais aucune ne montre ce que la carte annonce (un guichet, une école,
+une déchèterie…). Ce sont les six cartes « Démarches » qui en souffrent le plus.
 
-**Pensez au texte alternatif** : chaque `<img>` porte un `alt` décrivant la scène.
-Si vous changez la photo, changez l'`alt` dans `index.html` — c'est ce que lisent
-les lecteurs d'écran, et c'est une obligation d'accessibilité pour un site public.
+## La liste à remplacer, par priorité
+
+**Les six cartes Démarches** — format **portrait 3:4**, ≥ 800 px de large.
+Le bas de l'image est couvert par un dégradé sombre : mettez le sujet dans la
+moitié haute.
+
+| Fichier | Carte | Sujet à photographier ou à chercher en banque d'images |
+|---|---|---|
+| `mur.jpg` | Autorisations d'urbanisme | Chantier, échafaudage sur une façade en pierre, plans d'architecte |
+| `volets.jpg` | État civil | Mairie, façade avec drapeau tricolore, salle des mariages |
+| `toits2.jpg` | Cantine et garderie | Cour d'école, enfants attablés, cantine |
+| `champ.jpg` | Taxe de séjour | Volets ouverts d'un gîte, terrasse de location, clés |
+| `clocher2.jpg` | Déchets et déchèteries | Bacs de tri, déchèterie, camion de collecte |
+| `bois.jpg` | Débroussaillement | Pinède, broussailles, panneau « risque incendie », débroussailleuse |
+
+**Les quatre cartes Découvrir** — même format portrait 3:4.
+
+| Fichier | Carte | Sujet |
+|---|---|---|
+| `chateau.jpg` | Le château | Le château d'Entrecasteaux et son jardin à la française |
+| `clocher.jpg` | Église Saint-Sauveur | Le clocher, la nef, le portail |
+| `toits.jpg` | Le vieux village | Une ruelle en calade, une placette, une fontaine |
+| `falaise.jpg` | L'eau et la pierre | Le pont, le lavoir, l'aqueduc de Pimaquet |
+
+`toits.jpg` sert aussi de vue dans la section Mairie, en 4:3 : choisissez une
+image qui tient dans les deux cadrages.
+
+**Le héros** — `village.jpg`, format **paysage 2,5:1**, ≥ 1900 px de large.
+Le nom du village s'affiche au centre : gardez cette bande calme (ciel,
+feuillage, toits) pour que les lettres restent lisibles.
+
+## Poids et accessibilité
+
+150–400 Ko par carte, jusqu'à 500 Ko pour le héros (JPEG qualité 85).
+
+Chaque `<img>` porte un attribut `alt` qui décrit la scène. **Si vous changez la
+photo, changez l'`alt`** dans `index.html` : c'est ce que lisent les lecteurs
+d'écran, et c'est une obligation pour un site public.
