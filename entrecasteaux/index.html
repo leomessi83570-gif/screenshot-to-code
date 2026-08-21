@@ -1,0 +1,1078 @@
+<title>Entrecasteaux</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Site officiel de la commune d'Entrecasteaux (83570, Var) — Provence Verte. Actualités, agenda, démarches et informations pratiques." />
+
+<style>
+@font-face{font-family:'Quileute';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/quileute.woff2) format('woff2');}
+@font-face{font-family:'EB Garamond';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/ebgaramond-400.woff2) format('woff2');}
+@font-face{font-family:'EB Garamond';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/ebgaramond-600.woff2) format('woff2');}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/archivo-400.woff2) format('woff2');}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/archivo-500.woff2) format('woff2');}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/archivo-600.woff2) format('woff2');}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/archivo-700.woff2) format('woff2');}
+
+/* ============================================================
+   ENTRECASTEAUX — jetons
+   Palette « champ de lavande » : crème, ciel, lavande, violet,
+   olive. La terre cuite ne sert qu'à une chose : le danger.
+   ============================================================ */
+:root{
+  --creme:    #F6F1E3;
+  --creme-2:  #EFE8D6;
+  --creme-3:  #E3DAC4;
+  --ciel:     #AAC7DC;
+  --ciel-pale:#DCE8F1;
+  --lavande:  #8B7AC9;
+  --lavande-c:#6F5CB4;
+  --violet:   #4A3E8C;
+  --encre:    #241E44;
+  --encre-2:  #2F2757;
+  --olive:    #6E9A15;
+  --terre:    #A8452F;          /* sémantique danger uniquement */
+  --sourd:    #6C6483;
+  --sourd-clr:#B9B2CC;
+
+  --shell: min(1320px, 100%);
+  --pad: clamp(20px, 5vw, 72px);
+  --gut: max(var(--pad), calc((100vw - 1320px) / 2 + var(--pad)));
+  --debord: clamp(80px, 8vw, 112px);
+  --r: 3px;
+
+  --f-titre: "Quileute", "Optima", "Palatino Linotype", Georgia, serif;
+  --f-serif: "EB Garamond", Georgia, "Times New Roman", serif;
+  --f-sans:  "Archivo", "Segoe UI", system-ui, sans-serif;
+
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --ease-out: cubic-bezier(.16,1,.3,1);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{
+  margin:0; background:var(--creme); color:var(--encre);
+  font-family:var(--f-sans); font-size:16px; line-height:1.62;
+  overflow-x:hidden;
+}
+img{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+p{ margin:0; }
+ul{ margin:0; padding:0; list-style:none; }
+:focus-visible{ outline:2px solid var(--lavande-c); outline-offset:3px; border-radius:2px; }
+.sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+.chiffres{ font-family:var(--f-sans); font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; }
+
+.shell{ width:var(--shell); margin-inline:auto; padding-inline:var(--pad); }
+
+/* ---------- titrage ---------- */
+/* Quileute : capitales only, ni accents ni chiffres. Réservé aux
+   mots sans accent — le serif compagnon prend le reste. */
+.tq{ font-family:var(--f-titre); text-transform:uppercase; letter-spacing:.02em; font-weight:400; }
+h1,h2,h3,h4{ margin:0; font-family:var(--f-serif); font-weight:600; line-height:1.1; text-wrap:balance; }
+.surtitre{
+  font-family:var(--f-sans); font-weight:600; font-size:.7rem;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--lavande-c);
+}
+.surtitre--clair{ color:var(--ciel); }
+.titre-sec{ font-size:clamp(1.8rem,3.1vw,2.6rem); margin-top:14px; }
+.titre-sec.tq{ font-size:clamp(1.7rem,2.9vw,2.4rem); letter-spacing:.03em; }
+.chapo{ font-family:var(--f-serif); font-size:clamp(1.05rem,1.5vw,1.22rem); line-height:1.55; color:var(--sourd); max-width:56ch; }
+.on-encre .chapo{ color:var(--sourd-clr); }
+
+.evitement{
+  position:fixed; top:8px; left:8px; z-index:200; background:var(--encre); color:#fff;
+  padding:10px 16px; border-radius:var(--r); transform:translateY(-160%); transition:transform .3s var(--ease);
+}
+.evitement:focus{ transform:none; }
+
+/* ---------- révélations ---------- */
+.rv{ opacity:0; transform:translateY(24px);
+     transition:opacity .85s var(--ease-out) var(--d,0s), transform .85s var(--ease-out) var(--d,0s); }
+.rv.in{ opacity:1; transform:none; }
+
+/* ============================================================
+   Progression + navigation
+   ============================================================ */
+.progres{ position:fixed; inset:0 auto auto 0; height:2px; width:100%; z-index:95;
+          transform:scaleX(0); transform-origin:0 50%; background:var(--lavande); }
+
+.nav{
+  position:fixed; inset:0 0 auto 0; z-index:90;
+  display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:20px;
+  padding:18px var(--gut);
+  transition:background .45s var(--ease), padding .45s var(--ease), transform .5s var(--ease), box-shadow .4s var(--ease);
+}
+.nav::before{ content:""; position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(180deg, rgba(36,30,68,.62), rgba(36,30,68,0)); transition:opacity .4s var(--ease); }
+.nav.solide{ background:var(--encre); padding-block:11px; box-shadow:0 1px 0 rgba(255,255,255,.1); }
+.nav.solide::before{ opacity:0; }
+.nav.cache{ transform:translateY(-104%); }
+
+.marque{ display:flex; align-items:center; gap:12px; color:#fff; }
+.blason{ width:23px; height:28px; flex:none; }
+.marque-nom{ display:block; font-family:var(--f-titre); text-transform:uppercase; font-size:1.02rem; letter-spacing:.06em; line-height:1; }
+.marque-sous{ display:block; font-size:.63rem; letter-spacing:.15em; text-transform:uppercase; color:var(--ciel); margin-top:4px; }
+
+.liens{ display:flex; align-items:center; justify-content:center; gap:4px; }
+.liens a{
+  position:relative; font-size:.9rem; font-weight:500; color:#fff;
+  padding:8px 15px; border:1px solid transparent; border-radius:var(--r);
+  transition:border-color .35s var(--ease), background .35s var(--ease);
+}
+.liens a i{ position:absolute; left:15px; right:15px; bottom:5px; height:1px; background:currentColor;
+            transform:scaleX(0); transform-origin:0 50%; transition:transform .4s var(--ease-out); }
+.liens a:hover i{ transform:scaleX(1); }
+.liens a.actif{ border-color:rgba(255,255,255,.75); }
+.liens a.actif i{ display:none; }
+
+.outils{ display:flex; align-items:center; gap:8px; justify-self:end; }
+.btn-icone{
+  width:38px; height:38px; display:grid; place-items:center; color:#fff;
+  border:1px solid rgba(255,255,255,.32); border-radius:var(--r);
+  transition:background .3s var(--ease), border-color .3s var(--ease), color .3s var(--ease);
+}
+.btn-icone:hover{ background:#fff; color:var(--encre); border-color:#fff; }
+.btn-icone svg{ width:16px; height:16px; }
+.raccourci-clavier{ font-size:.62rem; letter-spacing:.08em; color:rgba(255,255,255,.6); padding-left:2px; }
+
+.burger{ display:none; width:40px; height:40px; }
+.burger span{ display:block; width:20px; height:2px; background:#fff; margin:5px auto; transition:transform .4s var(--ease), opacity .3s; }
+.nav.ouvert .burger span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+.nav.ouvert .burger span:nth-child(2){ opacity:0; }
+.nav.ouvert .burger span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+@media (max-width:940px){
+  .nav{ display:flex; padding-inline:var(--pad); }
+  .marque{ margin-right:auto; }
+  .burger{ display:block; order:3; }
+  .liens{
+    position:fixed; inset:0 0 auto 0; flex-direction:column; align-items:stretch; gap:0;
+    background:var(--encre); padding:88px var(--pad) 30px;
+    clip-path:inset(0 0 100% 0); transition:clip-path .55s var(--ease-out);
+  }
+  .nav.ouvert .liens{ clip-path:inset(0 0 0 0); }
+  .liens a{ padding:15px 0; font-size:1.2rem; border:0; border-bottom:1px solid rgba(255,255,255,.14); font-family:var(--f-serif); }
+  .liens a.actif{ color:var(--ciel); }
+  .raccourci-clavier{ display:none; }
+}
+
+/* ============================================================
+   Héros — format Breda : photo pleine largeur, voile, mot
+   monumental, action unique, indice de défilement.
+   ============================================================ */
+.heros{ position:relative; background:var(--encre); overflow:hidden; height:min(88vh,700px); }
+.heros-media{ position:absolute; inset:0; }
+.heros-media img{ width:100%; height:100%; object-fit:cover; object-position:center 58%; }
+.heros-media::after{
+  content:""; position:absolute; inset:0;
+  background:
+    linear-gradient(180deg, rgba(36,30,68,.66) 0%, rgba(36,30,68,.12) 26%, rgba(36,30,68,0) 42%),
+    linear-gradient(180deg, rgba(36,30,68,0) 40%, rgba(36,30,68,.62) 76%, var(--encre) 100%),
+    radial-gradient(115% 62% at 50% 50%, rgba(36,30,68,.42), rgba(36,30,68,0) 74%);
+}
+@media (min-width:1240px){ .heros{ height:auto; aspect-ratio:1938/776; max-height:820px; } }
+
+.heros-contenu{ position:absolute; inset:0; z-index:2; display:flex; flex-direction:column;
+                align-items:center; justify-content:center; text-align:center; padding:0 var(--pad); }
+.heros-titre{
+  font-family:var(--f-titre); text-transform:uppercase; font-weight:400;
+  font-size:min(8.4vw, 9rem); line-height:.98; letter-spacing:.03em;
+  color:#fff; margin:0; white-space:nowrap;
+}
+@media (max-width:760px){ .heros-titre{ font-size:9.8vw; } }
+.heros-titre .m{ display:inline-block; overflow:hidden; vertical-align:bottom; padding-right:.02em; }
+.heros-titre .m > span{ display:inline-block; transform:translateY(106%);
+  animation:monte 1.2s var(--ease-out) forwards; animation-delay:var(--d); }
+@keyframes monte{ to{ transform:none; } }
+
+.heros-meta{
+  margin-top:20px; display:flex; flex-wrap:wrap; justify-content:center; align-items:center;
+  gap:10px 18px; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase;
+  color:rgba(255,255,255,.82);
+  opacity:0; animation:apparait .9s var(--ease-out) .95s forwards;
+}
+.heros-meta .sep{ width:4px; height:4px; border-radius:50%; background:var(--lavande); }
+.heros-actions{ margin-top:32px; display:flex; flex-wrap:wrap; gap:12px; justify-content:center;
+  opacity:0; animation:apparait .9s var(--ease-out) 1.12s forwards; }
+@keyframes apparait{ to{ opacity:1; } }
+
+.btn{
+  position:relative; display:inline-flex; align-items:center; gap:10px; isolation:isolate;
+  padding:15px 26px; border-radius:var(--r); overflow:hidden;
+  font-family:var(--f-sans); font-weight:600; font-size:.76rem; letter-spacing:.15em; text-transform:uppercase;
+}
+.btn svg{ width:13px; height:13px; transition:transform .4s var(--ease-out); }
+.btn:hover svg{ transform:translateX(5px); }
+.btn--plein{ background:var(--lavande-c); color:#fff; }
+.btn--plein::before{ content:""; position:absolute; inset:0; z-index:-1; background:var(--violet);
+  transform:translateY(101%); transition:transform .45s var(--ease-out); }
+.btn--plein:hover::before{ transform:none; }
+.btn--ligne{ border:1px solid rgba(255,255,255,.55); color:#fff; }
+.btn--ligne:hover{ background:#fff; color:var(--encre); border-color:#fff; }
+.btn--encre{ background:var(--encre); color:#fff; }
+.btn--encre::before{ content:""; position:absolute; inset:0; z-index:-1; background:var(--lavande-c);
+  transform:translateY(101%); transition:transform .45s var(--ease-out); }
+.btn--encre:hover::before{ transform:none; }
+
+.indice{
+  position:absolute; left:50%; bottom:22px; z-index:3; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:9px;
+  font-size:.58rem; letter-spacing:.26em; text-transform:uppercase; color:rgba(255,255,255,.7);
+  opacity:0; animation:apparait .8s var(--ease) 1.6s forwards;
+}
+.indice i{ width:1px; height:38px; background:rgba(255,255,255,.35); position:relative; overflow:hidden; }
+.indice i::after{ content:""; position:absolute; inset:0; background:#fff; animation:goutte 2.2s var(--ease) infinite; }
+@keyframes goutte{ 0%{ transform:translateY(-100%);} 55%,100%{ transform:translateY(100%);} }
+
+/* ============================================================
+   Alerte
+   ============================================================ */
+.alerte{ background:var(--terre); color:#fff; }
+.alerte[hidden]{ display:none; }
+.alerte-in{ display:flex; align-items:center; gap:14px; padding-block:13px; font-size:.88rem; }
+.pouls{ width:9px; height:9px; border-radius:50%; background:#fff; flex:none; animation:pouls 2s ease-in-out infinite; }
+@keyframes pouls{ 0%,100%{ opacity:1; transform:scale(1);} 50%{ opacity:.35; transform:scale(.7);} }
+.alerte b{ font-weight:700; }
+.alerte a{ margin-left:auto; border-bottom:1px solid rgba(255,255,255,.5); white-space:nowrap; padding-bottom:2px; }
+.alerte a:hover{ border-color:#fff; }
+.alerte .fermer{ width:30px; height:30px; font-size:1.3rem; line-height:1; color:#fff; opacity:.8; flex:none; }
+.alerte .fermer:hover{ opacity:1; }
+@media (max-width:700px){
+  .alerte-in{ flex-wrap:wrap; position:relative; }
+  .alerte span:not(.pouls){ padding-right:26px; }
+  .alerte a{ margin-left:0; }
+  .alerte .fermer{ position:absolute; top:6px; right:var(--pad); }
+}
+
+/* ============================================================
+   Barre « la mairie aujourd'hui »
+   ============================================================ */
+.pratique{ background:var(--ciel-pale); border-bottom:1px solid var(--creme-3); }
+.pratique-in{ display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:clamp(16px,3vw,40px); align-items:center; padding-block:20px; }
+.etat{ display:inline-flex; align-items:center; gap:10px; font-weight:600; font-size:.92rem; }
+.etat .puce{ width:9px; height:9px; border-radius:50%; background:var(--olive); flex:none; box-shadow:0 0 0 4px rgba(110,154,21,.18); }
+.etat[data-ouvert="0"] .puce{ background:var(--terre); box-shadow:0 0 0 4px rgba(168,69,47,.16); }
+.etat small{ display:block; font-weight:400; color:var(--sourd); font-size:.8rem; letter-spacing:0; text-transform:none; }
+.raccourcis{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+.raccourcis a{
+  display:inline-flex; align-items:center; gap:8px; padding:9px 15px; font-size:.83rem; font-weight:500;
+  background:#fff; border:1px solid var(--creme-3); border-radius:999px;
+  transition:border-color .3s var(--ease), transform .3s var(--ease-out), color .3s var(--ease);
+}
+.raccourcis a:hover{ border-color:var(--lavande); color:var(--lavande-c); transform:translateY(-2px); }
+.raccourcis svg{ width:14px; height:14px; }
+.tel{ font-weight:600; white-space:nowrap; }
+.tel span{ display:block; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--sourd); font-weight:500; }
+@media (max-width:940px){ .pratique-in{ grid-template-columns:1fr; text-align:left; } .raccourcis{ justify-content:flex-start; } }
+
+/* ============================================================
+   Sections génériques
+   ============================================================ */
+.section{ padding-block:clamp(56px,7vw,96px); }
+.section--encre{ background:var(--encre); color:#fff; }
+.section--creme{ background:var(--creme-2); }
+.section--ciel{ background:var(--ciel-pale); }
+.tete{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(24px,4vw,64px); align-items:end; }
+.tete .chapo{ padding-bottom:4px; }
+@media (max-width:860px){ .tete{ grid-template-columns:1fr; align-items:start; } }
+
+.lien-fleche{ display:inline-flex; align-items:center; gap:9px; font-weight:500; font-size:.86rem;
+  padding-bottom:3px; border-bottom:1px solid currentColor; }
+.lien-fleche svg{ width:12px; height:12px; transition:transform .4s var(--ease-out); }
+.lien-fleche:hover svg{ transform:translateX(5px); }
+
+/* ============================================================
+   Actualité
+   ============================================================ */
+.actus{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(18px,2.4vw,32px); margin-top:clamp(32px,4vw,52px); }
+.actu{
+  background:#fff; border:1px solid var(--creme-3); border-radius:var(--r);
+  padding:26px 26px 28px; display:flex; flex-direction:column; gap:12px;
+  transition:transform .45s var(--ease-out), box-shadow .45s var(--ease-out), border-color .45s var(--ease);
+}
+.actu:hover{ transform:translateY(-6px); border-color:var(--lavande); box-shadow:0 20px 40px -28px rgba(36,30,68,.5); }
+.etiquette{ display:inline-flex; align-items:center; gap:8px; font-size:.68rem; font-weight:600;
+  letter-spacing:.17em; text-transform:uppercase; }
+.etiquette i{ width:7px; height:7px; border-radius:50%; background:currentColor; }
+.actu h3{ font-size:1.2rem; }
+.actu p{ font-size:.92rem; color:var(--sourd); flex:1; }
+@media (max-width:940px){ .actus{ grid-template-columns:1fr; } }
+
+/* ============================================================
+   Agenda — la date porte la structure
+   ============================================================ */
+.filtres{ display:flex; gap:8px; }
+.filtres button{
+  padding:8px 16px; font-size:.76rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
+  border:1px solid var(--creme-3); border-radius:999px; color:var(--sourd); background:#fff;
+  transition:background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+}
+.filtres button[aria-pressed="true"]{ background:var(--encre); color:#fff; border-color:var(--encre); }
+.filtres button:hover{ border-color:var(--lavande); color:var(--lavande-c); }
+.filtres button[aria-pressed="true"]:hover{ color:#fff; border-color:var(--encre); }
+
+.evts{ margin-top:clamp(28px,3.5vw,44px); border-top:1px solid var(--creme-3); }
+.evt{
+  position:relative; display:grid; grid-template-columns:82px minmax(0,1fr) auto auto;
+  gap:clamp(14px,2.6vw,30px); align-items:center;
+  padding:20px 0; border-bottom:1px solid var(--creme-3);
+  transition:padding-left .5s var(--ease-out), opacity .35s var(--ease);
+}
+.evt::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--lavande);
+  transform:scaleY(0); transform-origin:50% 0; transition:transform .5s var(--ease-out); }
+.evt:hover{ padding-left:20px; }
+.evt:hover::before{ transform:scaleY(1); }
+.evt[hidden]{ display:none; }
+.evt .jour{ text-align:left; }
+.evt .jour b{ display:block; font-size:1.9rem; font-weight:600; line-height:1; letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums; font-family:var(--f-sans); }
+.evt .jour span{ font-size:.68rem; letter-spacing:.19em; text-transform:uppercase; color:var(--sourd); }
+.evt h3{ font-size:1.14rem; }
+.evt .ou{ font-size:.86rem; color:var(--sourd); margin-top:3px; }
+.evt .quand{ display:inline-flex; align-items:center; font-size:.68rem; font-weight:600; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--violet); background:var(--ciel-pale); border-radius:999px;
+  padding:5px 12px; white-space:nowrap; }
+.evt .ics{
+  display:inline-flex; align-items:center; gap:7px; font-size:.7rem; font-weight:600; letter-spacing:.12em;
+  text-transform:uppercase; padding:8px 13px; border:1px solid var(--creme-3); border-radius:var(--r);
+  color:var(--encre); background:#fff; white-space:nowrap;
+  transition:background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+}
+.evt .ics:hover{ background:var(--encre); color:#fff; border-color:var(--encre); }
+.evt .ics svg{ width:12px; height:12px; }
+.gratuit{ display:inline-block; font-size:.62rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+  color:#fff; background:var(--olive); border-radius:999px; padding:3px 9px; margin-left:9px; vertical-align:2px; }
+@media (max-width:860px){
+  .evt{ grid-template-columns:64px minmax(0,1fr); }
+  .evt .quand,.evt .ics{ grid-column:2; justify-self:start; }
+}
+
+/* ============================================================
+   Découvrir — rail de cartes qui déborde sur la section suivante
+   ============================================================ */
+.decouvrir{
+  position:relative; color:#fff; padding-top:clamp(56px,7vw,96px);
+  background:linear-gradient(180deg, var(--encre) calc(100% - var(--debord)), rgba(36,30,68,0) calc(100% - var(--debord)));
+}
+.dec-in{ display:grid; grid-template-columns:minmax(220px,290px) minmax(0,1fr);
+         gap:clamp(26px,4vw,64px); align-items:start; padding-left:var(--gut); }
+.dec-nav{ display:flex; gap:11px; margin-top:clamp(16px,2vw,24px); }
+.dec-nav button{
+  width:42px; height:42px; border-radius:50%; border:1px solid rgba(255,255,255,.45);
+  display:grid; place-items:center; color:#fff; background:rgba(36,30,68,.5); backdrop-filter:blur(2px);
+  transition:background .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease), transform .35s var(--ease);
+}
+.dec-nav button:hover{ background:#fff; color:var(--encre); border-color:#fff; transform:scale(1.06); }
+.dec-nav svg{ width:14px; height:14px; }
+
+.rail-boite{ overflow-x:clip; overflow-y:visible; cursor:grab; }
+.rail-boite.tire{ cursor:grabbing; }
+.rail{ display:flex; gap:26px; transition:transform .85s var(--ease-out); will-change:transform; }
+.fiche{
+  position:relative; flex:0 0 clamp(210px,20vw,282px); aspect-ratio:282/404;
+  overflow:hidden; border-radius:var(--r); background:var(--encre-2);
+  transition:transform .5s var(--ease-out);
+}
+.fiche img{ width:100%; height:100%; object-fit:cover; transition:transform 1.1s var(--ease-out); }
+.fiche::after{ content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(180deg, rgba(36,30,68,0) 38%, rgba(36,30,68,.85) 100%); }
+.fiche-corps{ position:absolute; inset:auto 0 0 0; z-index:2; padding:20px 20px 22px; }
+.fiche-num{ font-size:.68rem; letter-spacing:.2em; color:var(--ciel); font-weight:600; }
+.fiche h3{ font-size:1.1rem; margin-top:5px; }
+.fiche .ep{ display:block; margin-top:5px; font-size:.75rem; color:rgba(255,255,255,.72); }
+.fiche:hover{ transform:translateY(-9px); }
+.fiche:hover img{ transform:scale(1.07); }
+.fiche-lien{ position:absolute; inset:0; z-index:3; }
+@media (max-width:860px){
+  .dec-in{ grid-template-columns:minmax(0,1fr); padding-right:var(--gut); }
+  .rail-boite{ margin-right:calc(-1 * var(--gut)); }
+}
+
+/* ============================================================
+   Démarches
+   ============================================================ */
+.dem-grille{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(14px,1.8vw,22px); margin-top:clamp(30px,4vw,48px); }
+.dem{
+  display:flex; gap:16px; align-items:flex-start; padding:22px 22px;
+  background:#fff; border:1px solid var(--creme-3); border-radius:var(--r);
+  transition:border-color .35s var(--ease), transform .4s var(--ease-out), box-shadow .4s var(--ease-out);
+}
+.dem:hover{ border-color:var(--lavande); transform:translateY(-4px); box-shadow:0 18px 34px -26px rgba(36,30,68,.45); }
+.dem-ico{ width:38px; height:38px; flex:none; display:grid; place-items:center; border-radius:50%;
+  background:var(--ciel-pale); color:var(--violet); }
+.dem-ico svg{ width:18px; height:18px; }
+.dem b{ display:block; font-family:var(--f-serif); font-size:1.06rem; font-weight:600; }
+.dem span{ display:block; font-size:.83rem; color:var(--sourd); margin-top:3px; }
+.dem .fl{ margin-left:auto; align-self:center; color:var(--lavande-c); transition:transform .4s var(--ease-out); }
+.dem:hover .fl{ transform:translateX(5px); }
+.dem[hidden]{ display:none; }
+@media (max-width:940px){ .dem-grille{ grid-template-columns:1fr; } }
+
+/* ============================================================
+   Mairie
+   ============================================================ */
+.mairie-grille{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(26px,4vw,60px); margin-top:clamp(30px,4vw,48px); }
+.bloc{ padding-bottom:26px; border-bottom:1px solid var(--creme-3); margin-bottom:26px; }
+.bloc:last-child{ border-bottom:0; margin-bottom:0; padding-bottom:0; }
+.bloc h3{ font-size:1.16rem; margin-bottom:12px; }
+.bloc a{ border-bottom:1px solid var(--creme-3); }
+.bloc a:hover{ border-color:var(--lavande); }
+.tbl{ width:100%; border-collapse:collapse; font-size:.9rem; }
+.tbl td{ padding:7px 0; border-bottom:1px solid var(--creme-2); vertical-align:top; }
+.tbl tr:last-child td{ border-bottom:0; }
+.tbl td:first-child{ color:var(--sourd); width:38%; }
+.tbl td:last-child{ text-align:right; font-variant-numeric:tabular-nums; }
+.tbl tr.auj td{ color:var(--violet); font-weight:600; }
+.tbl tr.auj td:first-child::before{ content:"▸ "; color:var(--lavande); }
+.carte-plan{ width:100%; aspect-ratio:4/3; border:1px solid var(--creme-3); border-radius:var(--r); overflow:hidden; background:var(--ciel-pale); }
+.carte-legende{ display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:10px; font-size:.8rem; color:var(--sourd); }
+.carte-plan img{ width:100%; height:100%; object-fit:cover; }
+@media (max-width:860px){ .mairie-grille{ grid-template-columns:1fr; } }
+
+/* ============================================================
+   Recherche (⌘K)
+   ============================================================ */
+.recherche{ position:fixed; inset:0; z-index:120; display:none; padding:12vh var(--pad) 0;
+  background:rgba(36,30,68,.55); backdrop-filter:blur(3px); }
+.recherche[data-ouvert="1"]{ display:block; animation:apparait .25s var(--ease) forwards; }
+.recherche-boite{ width:min(620px,100%); margin-inline:auto; background:var(--creme);
+  border-radius:var(--r); overflow:hidden; box-shadow:0 40px 80px -30px rgba(36,30,68,.7); }
+.recherche input{ width:100%; border:0; padding:20px 22px; font:inherit; font-size:1.05rem;
+  background:#fff; color:var(--encre); border-bottom:1px solid var(--creme-3); }
+.recherche input:focus{ outline:none; }
+.resultats{ max-height:46vh; overflow:auto; }
+.resultats a{ display:flex; gap:12px; align-items:baseline; padding:13px 22px; border-bottom:1px solid var(--creme-2); }
+.resultats a:hover,.resultats a.vise{ background:var(--ciel-pale); }
+.resultats b{ font-family:var(--f-serif); font-size:1rem; font-weight:600; }
+.resultats span{ font-size:.8rem; color:var(--sourd); margin-left:auto; }
+.resultats .vide{ padding:22px; color:var(--sourd); font-size:.9rem; }
+
+/* ============================================================
+   Pied
+   ============================================================ */
+.pied{ background:var(--encre); color:#fff; padding-block:clamp(50px,6vw,76px) 30px; }
+.pied-grille{ display:grid; grid-template-columns:1.4fr repeat(3,1fr); gap:clamp(24px,4vw,52px); }
+.pied-marque{ font-family:var(--f-titre); text-transform:uppercase; font-size:clamp(1.15rem,4.4vw,1.7rem); letter-spacing:.05em; white-space:nowrap; }
+.pied p{ color:var(--sourd-clr); font-size:.9rem; margin-top:16px; max-width:34ch; }
+.pied h4{ font-family:var(--f-sans); font-size:.68rem; letter-spacing:.19em; text-transform:uppercase;
+  color:var(--sourd-clr); font-weight:600; margin-bottom:14px; }
+.pied li{ margin-bottom:10px; }
+.pied li a{ font-size:.9rem; color:rgba(255,255,255,.86); position:relative; }
+.pied li a::after{ content:""; position:absolute; left:0; right:0; bottom:-3px; height:1px; background:currentColor;
+  transform:scaleX(0); transform-origin:0 50%; transition:transform .38s var(--ease-out); }
+.pied li a:hover::after{ transform:scaleX(1); }
+.pied-bas{ margin-top:clamp(34px,4.5vw,56px); padding-top:20px; border-top:1px solid rgba(255,255,255,.14);
+  display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; font-size:.78rem; color:var(--sourd-clr);
+  padding-right:60px; }
+@media (max-width:860px){ .pied-grille{ grid-template-columns:1fr 1fr; } }
+@media (max-width:560px){ .pied-grille{ grid-template-columns:1fr; } .pied-bas{ padding-right:56px; } }
+
+.haut{
+  position:fixed; right:clamp(14px,3vw,28px); bottom:clamp(14px,3vw,28px); z-index:80;
+  width:44px; height:44px; border-radius:50%; background:var(--encre); color:#fff; display:grid; place-items:center;
+  opacity:0; transform:translateY(12px) scale(.9); pointer-events:none;
+  box-shadow:0 12px 28px -14px rgba(36,30,68,.8);
+  transition:opacity .4s var(--ease), transform .4s var(--ease-out), background .3s var(--ease);
+}
+.haut.on{ opacity:1; transform:none; pointer-events:auto; }
+.haut:hover{ background:var(--lavande-c); }
+.haut svg{ width:15px; height:15px; }
+
+/* Les composants qui possèdent déjà une transition de survol
+   écraseraient celle de la révélation : :not(.in) reprend la main. */
+.actu.rv:not(.in), .fiche.rv:not(.in), .dem.rv:not(.in), .evt.rv:not(.in){
+  transition:opacity .85s var(--ease-out) var(--d,0s), transform .85s var(--ease-out) var(--d,0s);
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important;
+                        transition-duration:.001ms !important; }
+  .rv{ opacity:1; transform:none; }
+  .heros-titre .m > span{ transform:none; }
+  .heros-meta,.heros-actions,.indice{ opacity:1; }
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-blason" viewBox="0 0 26 32">
+    <path d="M1 1h24v19c0 6.5-6.2 9.8-12 11.5C7.2 29.8 1 26.5 1 20V1z" fill="currentColor" opacity=".92"/>
+    <path d="M10.6 1h4.8v27.9a34 34 0 0 1-2.4 1.2 34 34 0 0 1-2.4-1.2z" fill="#AAC7DC"/>
+    <path d="M5.6 21.5V11.4l2.7-2.2 2.7 2.2v10.1M15 21.5V11.4l2.7-2.2 2.7 2.2v10.1" stroke="#F6F1E3" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-ar" viewBox="0 0 16 16"><path d="M3 8h9M8.5 3.5 13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-al" viewBox="0 0 16 16"><path d="M13 8H4M7.5 3.5 3 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-haut" viewBox="0 0 16 16"><path d="M8 13V4M3.5 8.5 8 4l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-loupe" viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="5.4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m12.7 12.7 3.6 3.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 20 20"><path d="M5 2h7l4 4v12H5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 2v4h4M8 11h5M8 14h5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 20 20"><rect x="3" y="4" width="14" height="14" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 8h14M7 2v4M13 2v4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-mairie" viewBox="0 0 20 20"><path d="M2 8 10 3l8 5M4 8v9h12V8M8 17v-5h4v5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+  <symbol id="i-perso" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4 17c0-3.3 2.7-5 6-5s6 1.7 6 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-ecole" viewBox="0 0 20 20"><path d="M10 3 2 7l8 4 8-4-8-4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M5 9v4.5c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5V9" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+  <symbol id="i-maison" viewBox="0 0 20 20"><path d="M3 9 10 3.5 17 9v8H3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 17v-4h4v4" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+  <symbol id="i-tri" viewBox="0 0 20 20"><path d="M5 6h10l-1 11H6L5 6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M3 6h14M8 6V3h4v3M9 9.5v4M11 9.5v4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-feu" viewBox="0 0 20 20"><path d="M10 2.5c3 3.5 4.5 5.8 4.5 8.3a4.5 4.5 0 1 1-9 0c0-1.4.5-2.6 1.5-4 .3 1 .8 1.7 1.5 2 0-2.3.5-4.4 1.5-6.3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+  <symbol id="i-fb" viewBox="0 0 20 20"><path d="M11.5 18v-7h2.4l.4-2.8h-2.8V6.4c0-.8.2-1.4 1.4-1.4h1.5V2.5c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.1H6v2.8h2.5v7h3z" fill="currentColor"/></symbol>
+  <symbol id="i-tel" viewBox="0 0 20 20"><path d="M4.5 3h3l1.5 3.7-2 1.4a10.5 10.5 0 0 0 4.9 4.9l1.4-2L17 12.5v3a1.5 1.5 0 0 1-1.6 1.5A13 13 0 0 1 3 4.6 1.5 1.5 0 0 1 4.5 3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+</defs></svg>
+
+<div class="progres" id="progres"></div>
+<a class="evitement" href="#contenu">Aller au contenu</a>
+
+<header class="nav" id="nav">
+  <a class="marque" href="#haut" aria-label="Entrecasteaux — accueil">
+    <svg class="blason" viewBox="0 0 26 32" aria-hidden="true" style="color:var(--terre)"><use href="#i-blason"/></svg>
+    <span><span class="marque-nom">Entrecasteaux</span><span class="marque-sous">Var · Provence Verte</span></span>
+  </a>
+
+  <nav class="liens" id="liens" aria-label="Navigation principale">
+    <a href="#actualite">Actualité<i></i></a>
+    <a href="#agenda">Agenda<i></i></a>
+    <a href="#decouvrir">Découvrir<i></i></a>
+    <a href="#demarches">Démarches<i></i></a>
+    <a href="#mairie">Mairie<i></i></a>
+  </nav>
+
+  <div class="outils">
+    <button class="btn-icone" id="ouvrirRecherche" type="button" aria-label="Rechercher sur le site">
+      <svg aria-hidden="true"><use href="#i-loupe"/></svg>
+    </button>
+    <span class="raccourci-clavier" aria-hidden="true">⌘K</span>
+    <button class="burger" id="burger" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="haut">
+
+  <section class="heros">
+    <div class="heros-media"><img src="img/village.jpg" alt="Le village d'Entrecasteaux vu depuis la colline, château et toits de tuiles au-dessus de la Bresque" fetchpriority="high" /></div>
+    <div class="heros-contenu" id="herosContenu">
+      <h1 class="heros-titre">
+        <span class="m"><span style="--d:.18s">Entrecasteaux</span></span>
+      </h1>
+      <p class="heros-meta">
+        <span class="chiffres">83570</span><span class="sep"></span>
+        <span>Var · Provence Verte</span><span class="sep"></span>
+        <span class="chiffres">43°31′N 6°14′E</span><span class="sep"></span>
+        <span class="chiffres">97–354 m</span>
+      </p>
+      <div class="heros-actions">
+        <a class="btn btn--plein" href="#decouvrir">Découvrir le village <svg aria-hidden="true"><use href="#i-ar"/></svg></a>
+        <a class="btn btn--ligne" href="#demarches">Mes démarches <svg aria-hidden="true"><use href="#i-ar"/></svg></a>
+      </div>
+    </div>
+    <a class="indice" href="#contenu" aria-label="Descendre">Descendre<i></i></a>
+  </section>
+
+  <div class="alerte" id="alerte">
+    <div class="shell alerte-in">
+      <span class="pouls" aria-hidden="true"></span>
+      <span><b>Risque incendie rouge</b> — travaux et débroussaillement interdits sur la commune.</span>
+      <a href="#actualite">Consulter le bulletin</a>
+      <button class="fermer" id="fermerAlerte" type="button" aria-label="Fermer l'alerte">&times;</button>
+    </div>
+  </div>
+
+  <div class="pratique" id="contenu">
+    <div class="shell pratique-in">
+      <div class="etat" id="etat" data-ouvert="0" role="status">
+        <span class="puce" aria-hidden="true"></span>
+        <span><span id="etatTexte">Mairie</span><small id="etatDetail">Place du Général Estève, 83570</small></span>
+      </div>
+      <div class="raccourcis">
+        <a href="#demarches"><svg aria-hidden="true"><use href="#i-doc"/></svg> Démarches en ligne</a>
+        <a href="#agenda"><svg aria-hidden="true"><use href="#i-cal"/></svg> Agenda</a>
+        <a href="#mairie"><svg aria-hidden="true"><use href="#i-mairie"/></svg> Y venir</a>
+      </div>
+      <a class="tel chiffres" href="tel:+33494372288"><span>Accueil</span>04 94 37 22 88</a>
+    </div>
+  </div>
+
+  <section class="section" id="actualite">
+    <div class="shell">
+      <div class="tete">
+        <div>
+          <p class="surtitre rv">Le journal de la commune</p>
+          <h2 class="titre-sec rv" style="--d:.05s">Actualité</h2>
+        </div>
+        <p class="chapo rv" style="--d:.1s">Les informations qui touchent le quotidien du village : sécurité, solidarité, vie pratique. L'essentiel est repris chaque jour sur la page Facebook de la commune.</p>
+      </div>
+
+      <div class="actus">
+        <article class="actu rv">
+          <span class="etiquette" style="color:var(--terre)"><i></i>Sécurité</span>
+          <h3>Débroussaillement suspendu jusqu'en septembre</h3>
+          <p>De juin à septembre, l'usage d'outils motorisés ou métalliques est interdit : une étincelle suffit à déclencher un départ de feu. Les travaux lourds se font à l'automne.</p>
+          <a class="lien-fleche" href="#actualite">Lire la suite <svg aria-hidden="true"><use href="#i-ar"/></svg></a>
+        </article>
+        <article class="actu rv" style="--d:.08s">
+          <span class="etiquette" style="color:var(--lavande-c)"><i></i>Solidarité</span>
+          <h3>Canicule : registre des personnes vulnérables</h3>
+          <p>Les personnes fragiles peuvent s'inscrire auprès de la mairie pour bénéficier d'un suivi régulier par un agent communal pendant les épisodes de forte chaleur.</p>
+          <a class="lien-fleche" href="tel:+33494372288">Appeler la mairie <svg aria-hidden="true"><use href="#i-ar"/></svg></a>
+        </article>
+        <article class="actu rv" style="--d:.16s">
+          <span class="etiquette" style="color:var(--olive)"><i></i>Vie pratique</span>
+          <h3>Déchèteries : horaires d'été</h3>
+          <p>Du 1<sup>er</sup> juillet au 31 août, les déchèteries de la Provence Verte ouvrent de 6 h 00 à 14 h 00 en continu. Les jours d'ouverture restent inchangés.</p>
+          <a class="lien-fleche" href="#demarches">Provence Verte <svg aria-hidden="true"><use href="#i-ar"/></svg></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--creme" id="agenda">
+    <div class="shell">
+      <div class="tete">
+        <div>
+          <p class="surtitre rv">Les prochains rendez-vous</p>
+          <h2 class="titre-sec tq rv" style="--d:.05s">Agenda</h2>
+        </div>
+        <div class="rv" style="--d:.1s;justify-self:start;align-self:end">
+          <div class="filtres" role="group" aria-label="Filtrer l'agenda">
+            <button type="button" data-filtre="tout" aria-pressed="true">Tout</button>
+            <button type="button" data-filtre="gratuit" aria-pressed="false">Gratuit</button>
+          </div>
+        </div>
+      </div>
+      <div class="evts" id="evts"></div>
+      <p style="margin-top:28px">
+        <a class="lien-fleche" href="#agenda">Toutes les festivités <svg aria-hidden="true"><use href="#i-ar"/></svg></a>
+      </p>
+    </div>
+  </section>
+
+  <section class="decouvrir" id="decouvrir">
+    <div class="dec-in">
+      <div>
+        <p class="surtitre surtitre--clair rv">Site inscrit depuis 1967</p>
+        <h2 class="titre-sec rv" style="--d:.05s">Découvrir<br>le village</h2>
+        <p class="chapo rv" style="--d:.1s;color:rgba(255,255,255,.78);font-size:1rem;margin-top:14px;max-width:31ch">Entre châteaux — <em>intercastellos</em> — apparaît dès 1012. Mille ans plus tard, l'eau et la pierre racontent la même histoire.</p>
+        <div class="dec-nav rv" style="--d:.16s">
+          <button type="button" id="precedent" aria-label="Fiche précédente"><svg aria-hidden="true"><use href="#i-al"/></svg></button>
+          <button type="button" id="suivant" aria-label="Fiche suivante"><svg aria-hidden="true"><use href="#i-ar"/></svg></button>
+        </div>
+      </div>
+
+      <div class="rail-boite" id="railBoite">
+        <div class="rail" id="rail">
+          <article class="fiche rv"><img src="img/chateau.jpg" alt="La façade du château d'Entrecasteaux au-dessus du rocher" /><div class="fiche-corps"><span class="fiche-num">01</span><h3>Le château</h3><span class="ep">Monument historique · et son jardin à la française</span></div><a class="fiche-lien" href="#decouvrir" aria-label="Le château"></a></article>
+          <article class="fiche rv" style="--d:.08s"><img src="img/clocher.jpg" alt="Le clocher de l'église Saint-Sauveur au-dessus des toits" /><div class="fiche-corps"><span class="fiche-num">02</span><h3>Église Saint-Sauveur</h3><span class="ep">XIII<sup>e</sup> siècle · fortifiée</span></div><a class="fiche-lien" href="#decouvrir" aria-label="Église Saint-Sauveur"></a></article>
+          <article class="fiche rv" style="--d:.16s"><img src="img/toits.jpg" alt="Les toits de tuiles rondes du vieux village" /><div class="fiche-corps"><span class="fiche-num">03</span><h3>Le vieux village</h3><span class="ep">Ruelles en calade et placettes</span></div><a class="fiche-lien" href="#decouvrir" aria-label="Le vieux village"></a></article>
+          <article class="fiche rv" style="--d:.24s"><img src="img/falaise.jpg" alt="Le rocher et les voûtes de pierre sous le village" /><div class="fiche-corps"><span class="fiche-num">04</span><h3>L'eau et la pierre</h3><span class="ep">Ponts, lavoir, aqueduc · restauration</span></div><a class="fiche-lien" href="#decouvrir" aria-label="L'eau et la pierre"></a></article>
+          <article class="fiche rv" style="--d:.32s"><img src="img/grandpre.jpg" alt="Le Grand Pré, vaste esplanade en contrebas du village" /><div class="fiche-corps"><span class="fiche-num">05</span><h3>Le Grand Pré</h3><span class="ep">Cinéma en plein air · fêtes</span></div><a class="fiche-lien" href="#decouvrir" aria-label="Le Grand Pré"></a></article>
+          <article class="fiche rv" style="--d:.40s"><img src="img/verdure.jpg" alt="Les bois et la ripisylve autour de la Bresque" /><div class="fiche-corps"><span class="fiche-num">06</span><h3>La Bresque</h3><span class="ep">Rivière, baignade et sentiers</span></div><a class="fiche-lien" href="#decouvrir" aria-label="La Bresque"></a></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ciel" id="demarches">
+    <div class="shell">
+      <div class="tete">
+        <div>
+          <p class="surtitre rv">En ligne ou au guichet</p>
+          <h2 class="titre-sec rv" style="--d:.05s">Démarches</h2>
+        </div>
+        <p class="chapo rv" style="--d:.1s">Une grande partie des démarches se fait désormais en ligne. Pour le reste, l'accueil de la mairie vous reçoit du lundi au vendredi.</p>
+      </div>
+      <div class="dem-grille" id="demGrille">
+        <a class="dem rv" href="#demarches" data-mots="urbanisme permis construire cu dp pc travaux"><span class="dem-ico"><svg aria-hidden="true"><use href="#i-doc"/></svg></span><span><b>Autorisations d'urbanisme</b><span>Dépôt en ligne · CU, DP, PC, PA, PD</span></span><span class="fl"><svg width="14" height="14" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
+        <a class="dem rv" style="--d:.05s" href="#demarches" data-mots="etat civil acte naissance mariage recensement identite"><span class="dem-ico"><svg aria-hidden="true"><use href="#i-perso"/></svg></span><span><b>État civil</b><span>Actes, mariage, recensement</span></span><span class="fl"><svg width="14" height="14" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
+        <a class="dem rv" style="--d:.1s" href="#demarches" data-mots="cantine garderie ecole scolaire inscription enfants"><span class="dem-ico"><svg aria-hidden="true"><use href="#i-ecole"/></svg></span><span><b>Cantine et garderie</b><span>Inscriptions année scolaire</span></span><span class="fl"><svg width="14" height="14" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
+        <a class="dem rv" style="--d:.15s" href="#demarches" data-mots="taxe sejour location saisonniere meuble tourisme declaration"><span class="dem-ico"><svg aria-hidden="true"><use href="#i-maison"/></svg></span><span><b>Taxe de séjour</b><span>Location saisonnière · déclaration</span></span><span class="fl"><svg width="14" height="14" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
+        <a class="dem rv" style="--d:.2s" href="#demarches" data-mots="dechets decheterie tri encombrants poubelle ordures"><span class="dem-ico"><svg aria-hidden="true"><use href="#i-tri"/></svg></span><span><b>Déchets et déchèteries</b><span>Horaires, encombrants, tri</span></span><span class="fl"><svg width="14" height="14" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
+        <a class="dem rv" style="--d:.25s" href="#demarches" data-mots="debroussaillement obligation legale feu incendie foret"><span class="dem-ico"><svg aria-hidden="true"><use href="#i-feu"/></svg></span><span><b>Débroussaillement</b><span>Obligations légales et périodes</span></span><span class="fl"><svg width="14" height="14" aria-hidden="true"><use href="#i-ar"/></svg></span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="mairie">
+    <div class="shell">
+      <div class="tete">
+        <div>
+          <p class="surtitre rv">Place du Général Estève</p>
+          <h2 class="titre-sec tq rv" style="--d:.05s">La mairie</h2>
+        </div>
+        <p class="chapo rv" style="--d:.1s">Depuis la gare TGV des Arcs–Draguignan : D10 vers Taradeau et Lorgues, puis D562 vers Carcès, et D31 à droite avant Carcès.</p>
+      </div>
+
+      <div class="mairie-grille">
+        <div class="rv">
+          <div class="bloc">
+            <h3>Nous joindre</h3>
+            <p>Place du Général Estève<br />83570 Entrecasteaux<br />
+              <a class="chiffres" href="tel:+33494372288">04 94 37 22 88</a><br />
+              <a href="mailto:mairie@entrecasteaux.fr">mairie@entrecasteaux.fr</a></p>
+          </div>
+          <div class="bloc">
+            <h3>Horaires d'ouverture</h3>
+            <table class="tbl" id="tblHoraires">
+              <caption class="sr">Horaires d'ouverture de l'accueil</caption>
+              <tbody>
+                <tr data-jour="1"><td>Lundi</td><td>8 h 30 – 12 h · 13 h 30 – 16 h 30</td></tr>
+                <tr data-jour="2"><td>Mardi</td><td>8 h 30 – 12 h · 14 h 30 – 16 h 30</td></tr>
+                <tr data-jour="3"><td>Mercredi</td><td>8 h 30 – 12 h · après-midi fermé</td></tr>
+                <tr data-jour="4"><td>Jeudi</td><td>8 h 30 – 12 h · 14 h 30 – 16 h 30</td></tr>
+                <tr data-jour="5"><td>Vendredi</td><td>8 h 30 – 12 h · 13 h 30 – 16 h 30</td></tr>
+                <tr data-jour="6"><td>Samedi</td><td>Permanence 1×/mois, 8 h 30 – 12 h</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="bloc">
+            <h3>Numéros utiles</h3>
+            <table class="tbl">
+              <tbody>
+                <tr><td>Secours (Europe)</td><td class="chiffres">112</td></tr>
+                <tr><td>Pompiers</td><td class="chiffres">18</td></tr>
+                <tr><td>SAMU</td><td class="chiffres">15</td></tr>
+                <tr><td>Gendarmerie</td><td class="chiffres">17</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="rv" style="--d:.08s">
+          <figure style="margin:0">
+            <div class="carte-plan"><img src="img/toits.jpg" alt="Le centre du village, où se trouve la mairie" /></div>
+            <figcaption class="carte-legende"><span>Le cœur du village · place du Général Estève</span>
+              <a class="lien-fleche" style="font-size:.8rem" href="https://www.openstreetmap.org/?mlat=43.5167&amp;mlon=6.2425#map=15/43.5167/6.2425" target="_blank" rel="noopener">Ouvrir le plan <svg aria-hidden="true"><use href="#i-ar"/></svg></a></figcaption>
+          </figure>
+          <div style="margin-top:22px">
+            <h3 style="font-family:var(--f-serif);font-size:1.16rem">Le village en bref</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:26px;margin-top:16px">
+              <div><b class="chiffres" data-compte="1118" style="font-size:1.9rem;font-weight:600;letter-spacing:-.02em">0</b><span style="display:block;font-size:.78rem;color:var(--sourd)">habitants</span></div>
+              <div><b class="chiffres" style="font-size:1.9rem;font-weight:600;letter-spacing:-.02em">1012</b><span style="display:block;font-size:.78rem;color:var(--sourd)">première mention</span></div>
+              <div><b class="chiffres" data-compte="34" data-suffixe=" km²" style="font-size:1.9rem;font-weight:600;letter-spacing:-.02em">0</b><span style="display:block;font-size:.78rem;color:var(--sourd)">de superficie</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="pied">
+  <div class="shell">
+    <div class="pied-grille">
+      <div>
+        <div class="pied-marque">Entrecasteaux</div>
+        <p>Site officiel de la commune. Les alertes et informations du quotidien sont également publiées sur Facebook et l'application City All.</p>
+      </div>
+      <div><h4>Le site</h4><ul><li><a href="#actualite">Actualité</a></li><li><a href="#agenda">Agenda</a></li><li><a href="#decouvrir">Découvrir</a></li><li><a href="#demarches">Démarches</a></li></ul></div>
+      <div><h4>Municipalité</h4><ul><li><a href="#mairie">Le conseil municipal</a></li><li><a href="#mairie">Comptes rendus</a></li><li><a href="#mairie">Arrêtés</a></li><li><a href="#mairie">Marchés publics</a></li></ul></div>
+      <div><h4>Informations légales</h4><ul><li><a href="#mairie">Mentions légales</a></li><li><a href="#mairie">Accessibilité</a></li><li><a href="#mairie">Données personnelles</a></li><li><a href="#mairie">Plan du site</a></li></ul></div>
+    </div>
+    <div class="pied-bas">
+      <span>© 2026 Commune d'Entrecasteaux · Place du Général Estève, 83570</span>
+      <span>Var · Provence Verte</span>
+    </div>
+  </div>
+</footer>
+
+<div class="recherche" id="recherche" data-ouvert="0">
+  <div class="recherche-boite">
+    <label class="sr" for="champ">Rechercher sur le site</label>
+    <input id="champ" type="search" autocomplete="off" placeholder="Rechercher une démarche, une page…" />
+    <div class="resultats" id="resultats" role="listbox" aria-label="Résultats"></div>
+  </div>
+</div>
+
+<button class="haut" id="btnHaut" type="button" aria-label="Haut de page"><svg aria-hidden="true"><use href="#i-haut"/></svg></button>
+
+<script>
+(() => {
+  "use strict";
+  const doux = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $  = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  /* ============ Données ============ */
+  const HORAIRES = {           // créneaux en minutes depuis minuit
+    1: [[510, 720], [810, 990]],
+    2: [[510, 720], [870, 990]],
+    3: [[510, 720]],
+    4: [[510, 720], [870, 990]],
+    5: [[510, 720], [810, 990]],
+    6: [], 0: []
+  };
+  /* Rendez-vous à venir. Les trois premiers sont les rendez-vous
+     récurrents de la commune ; les suivants illustrent la saison. */
+  const EVENEMENTS = [
+    { d: "2026-09-06", h: "08:00", t: "Vide-grenier d'automne", o: "Place du Général Estève · inscriptions en mairie", q: "Toute la journée", g: true },
+    { d: "2026-09-19", h: "10:00", t: "Journées du patrimoine : le château", o: "Château d'Entrecasteaux · visite guidée du logis et du jardin", q: "8 € · sur réservation", g: false },
+    { d: "2026-10-03", h: "08:30", t: "Marché d'automne", o: "Place Bruny · producteurs de la Provence Verte", q: "8 h 30 – 13 h", g: true },
+    { d: "2026-11-11", h: "11:00", t: "Commémoration de l'Armistice", o: "Monument aux morts · dépôt de gerbe et verre de l'amitié", q: "Rassemblement 10 h 45", g: true },
+    { d: "2026-12-12", h: "16:00", t: "Marché de Noël", o: "Grand Pré · artisans, vin chaud et illuminations", q: "16 h – 21 h", g: true }
+  ];
+  const MOIS = ["jan", "fév", "mar", "avr", "mai", "juin", "juil", "août", "sep", "oct", "nov", "déc"];
+
+  /* ============ Révélations au défilement ============ */
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { rootMargin: "0px 0px -12% 0px", threshold: 0.1 });
+  const observe = (el) => (doux ? el.classList.add("in") : io.observe(el));
+  $$(".rv").forEach(observe);
+
+  /* ============ Nav, progression, parallaxe ============ */
+  const nav = $("#nav"), barre = $("#progres"), haut = $("#btnHaut"),
+        heros = $(".heros"), herosContenu = $("#herosContenu");
+  let dernierY = 0, enAttente = false;
+
+  function image() {
+    const y = scrollY;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    barre.style.transform = `scaleX(${max > 0 ? Math.min(y / max, 1) : 0})`;
+    nav.classList.toggle("solide", y > 30);
+    nav.classList.toggle("cache", y > dernierY + 4 && y > 460 && !nav.classList.contains("ouvert"));
+    haut.classList.toggle("on", y > innerHeight * 0.9);
+    if (!doux && herosContenu) {
+      const p = Math.min(y / heros.offsetHeight, 1);
+      herosContenu.style.transform = `translate3d(0, ${p * -13}%, 0)`;
+      herosContenu.style.opacity = String(1 - p * 1.2);
+    }
+    dernierY = y; enAttente = false;
+  }
+  addEventListener("scroll", () => { if (!enAttente) { enAttente = true; requestAnimationFrame(image); } }, { passive: true });
+  image();
+  haut.addEventListener("click", () => scrollTo({ top: 0, behavior: doux ? "auto" : "smooth" }));
+
+  /* ============ Menu mobile ============ */
+  const burger = $("#burger");
+  burger.addEventListener("click", () => {
+    const o = nav.classList.toggle("ouvert");
+    burger.setAttribute("aria-expanded", String(o));
+  });
+  $$("#liens a").forEach((a) => a.addEventListener("click", () => {
+    nav.classList.remove("ouvert"); burger.setAttribute("aria-expanded", "false");
+  }));
+
+  /* ============ Section active ============ */
+  const liens = $$("#liens a");
+  const espion = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      liens.forEach((a) => a.classList.toggle("actif", a.getAttribute("href") === "#" + e.target.id));
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  ["actualite", "agenda", "decouvrir", "demarches", "mairie"].forEach((id) => {
+    const el = document.getElementById(id); if (el) espion.observe(el);
+  });
+
+  /* ============ Feature — la mairie est-elle ouverte ? ============ */
+  const etat = $("#etat"), etatTexte = $("#etatTexte"), etatDetail = $("#etatDetail");
+  const hhmm = (m) => `${Math.floor(m / 60)} h${m % 60 ? " " + String(m % 60).padStart(2, "0") : ""}`;
+  const JOURS = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+
+  function ouverture() {
+    const now = new Date();
+    const j = now.getDay(), min = now.getHours() * 60 + now.getMinutes();
+    const creneaux = HORAIRES[j] || [];
+    const courant = creneaux.find(([a, b]) => min >= a && min < b);
+
+    $$("#tblHoraires tr").forEach((tr) => tr.classList.toggle("auj", Number(tr.dataset.jour) === j));
+
+    if (courant) {
+      etat.dataset.ouvert = "1";
+      etatTexte.textContent = "Mairie ouverte";
+      etatDetail.textContent = `Ferme à ${hhmm(courant[1])} · 04 94 37 22 88`;
+      return;
+    }
+    etat.dataset.ouvert = "0";
+    etatTexte.textContent = "Mairie fermée";
+    const prochain = creneaux.find(([a]) => min < a);
+    if (prochain) { etatDetail.textContent = `Ouvre à ${hhmm(prochain[0])}`; return; }
+    for (let k = 1; k <= 7; k++) {
+      const jj = (j + k) % 7, c = HORAIRES[jj] || [];
+      if (c.length) {
+        etatDetail.textContent = `Ouvre ${k === 1 ? "demain" : JOURS[jj]} à ${hhmm(c[0][0])}`;
+        return;
+      }
+    }
+    etatDetail.textContent = "Place du Général Estève, 83570";
+  }
+  ouverture();
+  setInterval(ouverture, 60000);
+
+  /* ============ Feature — agenda, décompte et export .ics ============ */
+  const conteneurEvts = $("#evts");
+  const jours = (iso) => {
+    const a = new Date(iso + "T00:00:00"), b = new Date();
+    b.setHours(0, 0, 0, 0);
+    return Math.round((a - b) / 86400000);
+  };
+  const quandTexte = (n) =>
+    n < 0 ? "passé" : n === 0 ? "aujourd'hui" : n === 1 ? "demain" : `dans ${n} jours`;
+
+  const ics = (e) => {
+    const d = e.d.replace(/-/g, ""), h = e.h.replace(":", "") + "00";
+    const corps = [
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Entrecasteaux//Agenda//FR",
+      "BEGIN:VEVENT", `UID:${d}-${e.t.replace(/\W/g, "")}@entrecasteaux.fr`,
+      `DTSTART:${d}T${h}`, `SUMMARY:${e.t}`, `LOCATION:${e.o.split(" · ")[0]}, Entrecasteaux`,
+      `DESCRIPTION:${e.q}`, "END:VEVENT", "END:VCALENDAR"
+    ].join("\r\n");
+    return "data:text/calendar;charset=utf-8," + encodeURIComponent(corps);
+  };
+
+  const AVENIR = EVENEMENTS.filter((e) => jours(e.d) >= 0);
+  conteneurEvts.innerHTML = (AVENIR.length ? AVENIR : EVENEMENTS).map((e, i) => {
+    const dt = new Date(e.d + "T00:00:00"), n = jours(e.d);
+    return `<a class="evt rv" style="--d:${(i * 0.06).toFixed(2)}s" href="#agenda" data-gratuit="${e.g}">
+      <span class="jour"><b>${String(dt.getDate()).padStart(2, "0")}</b><span>${MOIS[dt.getMonth()]}</span></span>
+      <span><h3>${e.t}${e.g ? '<span class="gratuit">Gratuit</span>' : ""}</h3><span class="ou">${e.o} · ${e.q}</span></span>
+      <span class="quand">${quandTexte(n)}</span>
+      <span class="ics" data-ics="${i}"><svg aria-hidden="true"><use href="#i-cal"/></svg>Ajouter</span>
+    </a>`;
+  }).join("");
+  $$(".evt", conteneurEvts).forEach(observe);
+
+  conteneurEvts.addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-ics]");
+    if (!b) return;
+    ev.preventDefault();
+    const e = (AVENIR.length ? AVENIR : EVENEMENTS)[Number(b.dataset.ics)];
+    const a = document.createElement("a");
+    a.href = ics(e); a.download = `${e.t.replace(/\W+/g, "-").toLowerCase()}.ics`;
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+
+  $$(".filtres button").forEach((b) => b.addEventListener("click", () => {
+    $$(".filtres button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    const seulGratuit = b.dataset.filtre === "gratuit";
+    $$(".evt", conteneurEvts).forEach((e) => {
+      e.hidden = seulGratuit && e.dataset.gratuit !== "true";
+    });
+  }));
+
+  /* ============ Compteurs ============ */
+  const nf = new Intl.NumberFormat("fr-FR");
+  const compteurs = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      compteurs.unobserve(e.target);
+      const el = e.target, cible = Number(el.dataset.compte), suf = el.dataset.suffixe || "";
+      if (doux) { el.textContent = nf.format(cible) + suf; return; }
+      const t0 = performance.now();
+      const pas = (t) => {
+        const k = Math.min((t - t0) / 1400, 1), e3 = 1 - Math.pow(1 - k, 3);
+        el.textContent = nf.format(Math.round(cible * e3)) + suf;
+        if (k < 1) requestAnimationFrame(pas);
+      };
+      requestAnimationFrame(pas);
+    });
+  }, { threshold: 0.6 });
+  $$("[data-compte]").forEach((el) => compteurs.observe(el));
+
+  /* ============ Rail « Découvrir » ============ */
+  const rail = $("#rail"), boite = $("#railBoite"), fiches = $$(".fiche", rail);
+  let idx = 0, minuterie = null, pause = false;
+
+  const pas = () => {
+    const a = fiches[0].getBoundingClientRect();
+    return fiches[1] ? fiches[1].getBoundingClientRect().left - a.left : a.width + 26;
+  };
+  const maxIdx = () => Math.max(0, fiches.length - Math.max(1, Math.round(boite.clientWidth / pas())));
+  const poser = (anim = true) => {
+    rail.style.transition = anim && !doux ? "" : "none";
+    rail.style.transform = `translate3d(${-idx * pas()}px,0,0)`;
+    if (!anim) requestAnimationFrame(() => (rail.style.transition = ""));
+  };
+  const aller = (i) => { idx = Math.max(0, Math.min(i, maxIdx())); poser(); };
+
+  $("#suivant").addEventListener("click", () => { aller(idx >= maxIdx() ? 0 : idx + 1); relancer(); });
+  $("#precedent").addEventListener("click", () => { aller(idx <= 0 ? maxIdx() : idx - 1); relancer(); });
+
+  function relancer() {
+    clearInterval(minuterie);
+    if (doux) return;
+    minuterie = setInterval(() => {
+      if (pause || document.hidden) return;
+      aller(idx >= maxIdx() ? 0 : idx + 1);
+    }, 3400);
+  }
+  boite.addEventListener("pointerenter", () => (pause = true));
+  boite.addEventListener("pointerleave", () => (pause = false));
+
+  let presse = false, departX = 0, departT = 0, bouge = 0;
+  boite.addEventListener("pointerdown", (e) => {
+    presse = true; bouge = 0; departX = e.clientX; departT = -idx * pas();
+    boite.classList.add("tire"); boite.setPointerCapture(e.pointerId);
+    rail.style.transition = "none";
+  });
+  boite.addEventListener("pointermove", (e) => {
+    if (!presse) return;
+    bouge = e.clientX - departX;
+    rail.style.transform = `translate3d(${departT + bouge}px,0,0)`;
+  });
+  const lacher = () => {
+    if (!presse) return;
+    presse = false; boite.classList.remove("tire"); rail.style.transition = "";
+    aller(idx - Math.round(bouge / pas())); relancer();
+  };
+  boite.addEventListener("pointerup", lacher);
+  boite.addEventListener("pointercancel", lacher);
+  $$(".fiche-lien", rail).forEach((a) => a.addEventListener("click", (e) => {
+    if (Math.abs(bouge) > 6) e.preventDefault();
+  }));
+  addEventListener("resize", () => poser(false));
+  relancer();
+
+  /* ============ Feature — recherche instantanée (⌘K) ============ */
+  const rech = $("#recherche"), champ = $("#champ"), res = $("#resultats");
+  const INDEX = [
+    ...$$(".dem").map((d) => ({
+      t: $("b", d).textContent, s: $("span span", d) ? $("b", d).nextElementSibling.textContent : "",
+      h: "#demarches", c: "Démarche", m: d.dataset.mots || ""
+    })),
+    { t: "Actualité", s: "Sécurité, solidarité, vie pratique", h: "#actualite", c: "Page", m: "news informations journal" },
+    { t: "Agenda", s: "Festivités et rendez-vous", h: "#agenda", c: "Page", m: "evenements festival fete concert" },
+    { t: "Découvrir le village", s: "Château, église, calades, Bresque", h: "#decouvrir", c: "Page", m: "patrimoine tourisme visite histoire" },
+    { t: "Horaires de la mairie", s: "Lundi au vendredi", h: "#mairie", c: "Pratique", m: "ouverture accueil guichet" },
+    { t: "Numéros d'urgence", s: "112 · 18 · 15 · 17", h: "#mairie", c: "Pratique", m: "secours pompiers samu gendarmerie" },
+    { t: "Y venir", s: "Depuis les Arcs–Draguignan ou l'A8", h: "#mairie", c: "Pratique", m: "acces route itineraire plan carte" }
+  ];
+  const sansAccent = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+  function rendre(q) {
+    const n = sansAccent(q.trim());
+    const trouves = !n ? INDEX.slice(0, 6)
+      : INDEX.filter((i) => sansAccent(i.t + " " + i.s + " " + i.m).includes(n));
+    res.innerHTML = trouves.length
+      ? trouves.map((i, k) => `<a href="${i.h}" class="${k === 0 ? "vise" : ""}"><b>${i.t}</b><span>${i.c}</span></a>`).join("")
+      : `<p class="vide">Aucun résultat pour « ${q} ». Essayez « urbanisme », « cantine » ou « agenda ».</p>`;
+  }
+  const ouvrirRech = () => {
+    rech.dataset.ouvert = "1"; rendre(""); champ.value = "";
+    requestAnimationFrame(() => champ.focus());
+  };
+  const fermerRech = () => { rech.dataset.ouvert = "0"; };
+  $("#ouvrirRecherche").addEventListener("click", ouvrirRech);
+  champ.addEventListener("input", () => rendre(champ.value));
+  rech.addEventListener("click", (e) => { if (e.target === rech) fermerRech(); });
+  res.addEventListener("click", fermerRech);
+  champ.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    const p = $("a.vise", res) || $("a", res);
+    if (p) { p.click(); fermerRech(); }
+  });
+
+  addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); ouvrirRech(); return; }
+    if (e.key === "Escape") {
+      if (rech.dataset.ouvert === "1") fermerRech();
+      else if (nav.classList.contains("ouvert")) burger.click();
+    }
+    if (rech.dataset.ouvert === "1") return;
+    if (e.key === "ArrowRight") { aller(idx + 1); relancer(); }
+    if (e.key === "ArrowLeft") { aller(idx - 1); relancer(); }
+  });
+
+  /* ============ Alerte ============ */
+  const alerte = $("#alerte");
+  try { if (localStorage.getItem("ec-alerte") === "lue") alerte.hidden = true; } catch (_) {}
+  $("#fermerAlerte").addEventListener("click", () => {
+    alerte.hidden = true;
+    try { localStorage.setItem("ec-alerte", "lue"); } catch (_) {}
+  });
+})();
+</script>
