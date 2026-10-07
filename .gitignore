@@ -2,9 +2,9 @@
 models/
 fonts/
 projects/
-broll/*
+broll/*/
 !broll/.gitkeep
 __pycache__/
-*.mp4
-*.mov
+projects/**/*.mp4
+
 *.wav

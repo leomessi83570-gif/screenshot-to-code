@@ -40,17 +40,21 @@ Si un mot est faux : corrige `projects/<nom>/lyrics.txt`, puis lance
 3. Si `lrclib.net` est accessible, les paroles officielles remplacent la transcription. L'outil retrouve tout seul le passage chanté dans le clip.
 4. Les plans d'ambiance changent à chaque ligne, l'image est assombrie, puis les mots sont incrustés avec un effet « pop » et le son d'origine est gardé.
 
-Tout tourne en local et gratuitement. Seuls les plans Pexels demandent une clé API, elle aussi gratuite.
+Tout tourne en local et gratuitement. Seuls les plans d'ambiance demandent une clé API gratuite (Pixabay ou Pexels).
 
 ## Réglages de l'environnement Claude Code (cloud)
 
-Dans claude.ai/code, ouvre le menu de l'environnement dans la barre de titre de la session, puis **Edit** :
+Dans claude.ai/code, ouvre le menu de l'environnement (en haut de la session), puis **Modifier l'environnement** :
 
-1. **Network access → Custom**, avec ces domaines dans **Allowed domains** (garde la case « package managers » cochée) :
+1. **Accès réseau** : choisis **Complet**. C'est le plus simple. Si tu préfères **Personnalisé**, ajoute ces domaines et garde les gestionnaires de paquets autorisés :
    - `lrclib.net` (paroles officielles)
-   - `api.pexels.com` et `videos.pexels.com` (plans d'ambiance)
-   - `github.com`, `objects.githubusercontent.com` et `release-assets.githubusercontent.com` (modèles et polices)
-2. **Environment variables** : `PEXELS_API_KEY=<ta clé>`. La clé est gratuite sur https://www.pexels.com/api/
-3. Rien d'autre : le hook `SessionStart` (`.claude/settings.json`) installe tout au démarrage de chaque session.
+   - `pixabay.com` et `cdn.pixabay.com` (plans d'ambiance)
+   - `api.pexels.com` et `videos.pexels.com` (seulement si tu as une clé Pexels)
+2. **Variables d'environnement** (plus bas dans la même fenêtre) : `PIXABAY_API_KEY=<ta clé>`. La clé est gratuite et donnée tout de suite sur https://pixabay.com/api/docs/ (section « Parameters », une fois connecté). `PEXELS_API_KEY` marche aussi.
+3. **Script de configuration** : tu peux le laisser vide. Le hook `SessionStart` (`.claude/settings.json`) installe tout au démarrage de chaque session.
 
 Sans ces réglages, l'outil marche quand même : il garde la transcription et utilise le dossier `broll/` ou la vidéo source comme fond.
+
+## Mettre tes propres plans d'ambiance
+
+Tu peux aussi déposer des clips (MP4/MOV) dans `broll/` : ils seront utilisés quand aucune clé n'est définie. Sur GitHub, ouvre le dossier `broll`, puis « Add file » → « Upload files ». Les fichiers de plus de 25 Mo ne passent pas par cette page.

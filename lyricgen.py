@@ -427,44 +427,63 @@ def list_clips(folder: Path) -> list[Path]:
     return sorted(p.resolve() for p in folder.rglob("*") if p.suffix.lower() in {".mp4", ".mov", ".webm", ".m4v"})
 
 
+def pexels_candidates(q: str, n: int, key: str) -> list[tuple[str, str]]:
+    params = urllib.parse.urlencode({"query": q, "orientation": "portrait", "per_page": n * 2})
+    res = http_json(f"https://api.pexels.com/videos/search?{params}", {"Authorization": key})
+    out = []
+    for v in res.get("videos", []):
+        files = [f for f in v.get("video_files", []) if f.get("file_type") == "video/mp4"
+                 and (f.get("height") or 0) > (f.get("width") or 0) and (f.get("height") or 0) <= 1920]
+        if files:
+            out.append((f"pexels_{v['id']}", max(files, key=lambda f: f["height"])["link"]))
+    return out
+
+
+def pixabay_candidates(q: str, n: int, key: str) -> list[tuple[str, str]]:
+    params = urllib.parse.urlencode({"key": key, "q": q, "per_page": max(n * 4, 10), "safesearch": "true"})
+    res = http_json(f"https://pixabay.com/api/videos/?{params}")
+    portrait, landscape = [], []
+    for h in res.get("hits", []):
+        files = [f for f in (h.get("videos") or {}).values() if f.get("url") and max(f.get("width", 0), f.get("height", 0)) <= 1920]
+        if not files:
+            continue
+        best = max(files, key=lambda f: f["width"] * f["height"])
+        (portrait if best["height"] > best["width"] else landscape).append((f"pixabay_{h['id']}", best["url"]))
+    return portrait + landscape  # vertical clips first, landscape ones get centre-cropped
+
+
+PROVIDERS = [("PEXELS_API_KEY", "Pexels", pexels_candidates), ("PIXABAY_API_KEY", "Pixabay", pixabay_candidates)]
+
+
 def fetch_broll(queries: list[str], per_query: int = 4) -> list[Path]:
-    """Download portrait stock clips from Pexels (needs PEXELS_API_KEY). Cached in broll/."""
-    key = os.environ.get("PEXELS_API_KEY")
-    if not key:
-        print("  b-roll: no PEXELS_API_KEY -> using local broll/ folder or the source video")
+    """Download stock clips from Pexels or Pixabay (whichever key is set). Cached in broll/."""
+    providers = [(name, fn, os.environ[env]) for env, name, fn in PROVIDERS if os.environ.get(env)]
+    if not providers:
+        print("  b-roll: no PIXABAY_API_KEY / PEXELS_API_KEY -> using local broll/ folder or the source video")
         return []
     clips: list[Path] = []
     for q in queries:
         folder = BROLL / re.sub(r"[^a-z0-9]+", "-", q.lower()).strip("-")
         folder.mkdir(parents=True, exist_ok=True)
-        cached = list_clips(folder)
-        if len(cached) >= per_query:
-            clips += cached[:per_query]
-            continue
-        params = urllib.parse.urlencode({"query": q, "orientation": "portrait", "per_page": per_query * 2})
-        try:
-            res = http_json(f"https://api.pexels.com/videos/search?{params}", {"Authorization": key})
-        except Exception as e:
-            print(f"  b-roll: Pexels unreachable ({e.__class__.__name__}) for '{q}'")
-            clips += cached
-            continue
-        got = cached[:]
-        for v in res.get("videos", []):
+        got = list_clips(folder)
+        for name, fn, key in providers:
             if len(got) >= per_query:
                 break
-            files = [f for f in v.get("video_files", []) if f.get("file_type") == "video/mp4"
-                     and (f.get("height") or 0) > (f.get("width") or 0) and (f.get("height") or 0) <= 1920]
-            if not files:
-                continue
-            best = max(files, key=lambda f: f["height"])
-            dest = folder / f"pexels_{v['id']}.mp4"
-            if not dest.exists():
-                req = urllib.request.Request(best["link"], headers={"User-Agent": "lyricgen/1.0"})
-                with urllib.request.urlopen(req, timeout=60) as r, open(dest, "wb") as fh:
-                    shutil.copyfileobj(r, fh)
-            got.append(dest)
+            try:
+                for cid, url in fn(q, per_query, key):
+                    if len(got) >= per_query:
+                        break
+                    dest = folder / f"{cid}.mp4"
+                    if dest in got:
+                        continue
+                    req = urllib.request.Request(url, headers={"User-Agent": "lyricgen/1.0"})
+                    with urllib.request.urlopen(req, timeout=90) as r, open(dest, "wb") as fh:
+                        shutil.copyfileobj(r, fh)
+                    got.append(dest)
+            except Exception as e:  # blocked network, bad key, quota…
+                print(f"  b-roll: {name} failed for '{q}' ({e.__class__.__name__}: {e})")
         print(f"  b-roll: {len(got)} clip(s) for '{q}'")
-        clips += got
+        clips += got[:per_query]
     return clips
 
 
@@ -540,7 +559,7 @@ def main() -> None:
     s.add_argument("--name", help="project folder name (default: artist-title)")
     s.add_argument("--style", nargs="+", choices=sorted(STYLES), default=["damso", "bello"])
     s.add_argument("--broll-dir", help="folder of your own background clips")
-    s.add_argument("--broll-query", nargs="+", help=f"Pexels searches (default: {DEFAULT_BROLL})")
+    s.add_argument("--broll-query", nargs="+", help=f"stock searches (default: {DEFAULT_BROLL})")
     s.add_argument("--clips-per-query", type=int, default=3)
     s.add_argument("--no-stock", action="store_true", help="never download stock clips")
     s.add_argument("--start", type=float)

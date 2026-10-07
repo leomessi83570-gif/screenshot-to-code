@@ -17,7 +17,7 @@ Goal: the user sends raw material, you hand back videos ready to post. Do everyt
 scripts/setup.sh   # no-op if already installed (the SessionStart hook runs it too)
 .venv/bin/python lyricgen.py make "<clip>" --artist "<Artist>" --title "<Title>" [--style damso bello] [--broll-query "dubai night" "night drive"] [--start S --end E]
 ```
-It separates the vocals, transcribes with word timestamps, swaps in official lyrics from LRCLIB when reachable, downloads Pexels b-roll when `PEXELS_API_KEY` is set (else uses `broll/` or the source video), renders each style and writes `caption.txt`.
+It separates the vocals, transcribes with word timestamps, swaps in official lyrics from LRCLIB when reachable, downloads Pixabay/Pexels b-roll when `PIXABAY_API_KEY`/`PEXELS_API_KEY` is set (else uses `broll/` or the source video), renders each style and writes `caption.txt`.
 
 ## 3. Check before sending
 - Contact sheet: `ffmpeg -v error -y -i OUT.mp4 -vf "fps=1/2,scale=270:-1,tile=6x3" -frames:v 1 sheet.jpg` then Read it. Words must be readable and centred.
