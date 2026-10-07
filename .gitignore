@@ -1,0 +1,10 @@
+.venv/
+models/
+fonts/
+projects/
+broll/*
+!broll/.gitkeep
+__pycache__/
+*.mp4
+*.mov
+*.wav
